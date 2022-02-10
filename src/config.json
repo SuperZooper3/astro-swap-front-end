@@ -1,0 +1,21 @@
+{
+    "dependencies": [
+        "OpenZeppelin/openzeppelin-contracts@4.4.0",
+        "smartcontractkit/chainlink-brownie-contracts@1.2.0"
+    ],
+    "compiler": {
+        "solc": {
+            "remappings": [
+                "@openzeppelin=OpenZeppelin/openzeppelin-contracts@4.4.0",
+                "@chainlink=smartcontractkit/chainlink-brownie-contracts@1.2.0"
+            ]
+        }
+    },
+    "dotenv": ".env",
+    "networks": {
+        "default": "development",
+        "rinkeby": {
+            "verify": true
+        }
+    }
+}
