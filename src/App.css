@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: rgb(245, 251, 255);
 }
 
 code {
@@ -15,6 +16,7 @@ code {
 /* Center all H1 */
 h1 {
   text-align: center;
+  font-size: 3rem;
 }
 
 /* Center all H2 */
@@ -32,5 +34,9 @@ html {
 }
 
 .App {
-  padding: 20px;
+  padding: 5%;
+}
+
+.Box {
+  background-color: rgb(41, 42, 81);
 }

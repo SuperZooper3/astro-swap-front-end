@@ -11,9 +11,9 @@ export const Connect = () => {
     return (
         <Stack spacing={2} direction="row-reverse">
             {isConnected ? (
-                <Button variant="outlined" onClick={deactivate}> Disconnect from {shortAddress}</Button>
+                <Button style={{maxWidth: '170px', maxHeight: '60px', minWidth: '30px', minHeight: '30px'}} color="secondary" variant="contained" onClick={deactivate}> Disconnect from {shortAddress}</Button>
             ) : (
-                <Button color="primary" variant="contained" onClick={() => activateBrowserWallet()}>Connect</Button>
+                <Button style={{maxWidth: '170px', maxHeight: '60px', minWidth: '30px', minHeight: '30px'}} color="primary" variant="contained" onClick={() => activateBrowserWallet()}>Connect</Button>
             )}
             {error?.name ?(
                 <Alert severity="error">{error.message}</Alert>

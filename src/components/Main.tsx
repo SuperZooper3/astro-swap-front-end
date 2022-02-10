@@ -2,6 +2,9 @@ import { useEthers } from "@usedapp/core"
 import networkMapping from "../chain-info/deployments/map.json"
 import helperConfig from "../helper-config.json"
 import { constants } from "ethers";
+import { Stack } from '@mui/material';
+import AstroSwapLogoV164x from "../images/AstroSwapLogoV164x.png"
+
 
 export const Main = () => {
     const { chainId } = useEthers();
@@ -9,7 +12,6 @@ export const Main = () => {
     const AstroSwapFactory: string = chainId ? networkMapping[String(chainId)]["AstroSwapFactory"][0] : constants.AddressZero
     return (
         <div>
-            <h1>Charity Raffle</h1>
             {chainId ? (
                 <p>Using contract {AstroSwapFactory} on {chainId ? network : "disconnected"} network.</p>
                 
