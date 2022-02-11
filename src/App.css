@@ -16,7 +16,7 @@ code {
 /* Center all H1 */
 h1 {
   text-align: center;
-  font-size: 3rem;
+  font-size: 5rem;
 }
 
 /* Center all H2 */
@@ -39,4 +39,10 @@ html {
 
 .Box {
   background-color: rgb(41, 42, 81);
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

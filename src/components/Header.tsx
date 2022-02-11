@@ -5,12 +5,10 @@ import FullLogo from "../images/AstroSwapLogoV1.png"
 
 export const Header = () => {
     return (
-        <div className="header">
-            <Stack spacing={2} direction="row" justifyContent="space-between">
-                <img src={FullLogo} alt="Astro Swap Logo" height={100} width={100}/>
-                <h1>Astro Swap</h1>
-                <Connect /> 
-            </Stack>
-        </div>
+        <Stack spacing={20} direction="row" className="center">
+            <img src={FullLogo} alt="Astro Swap Logo" height={170} width={170}/>
+            <h1>Astro Swap</h1>
+            <Connect /> 
+        </Stack>
     );
 };
