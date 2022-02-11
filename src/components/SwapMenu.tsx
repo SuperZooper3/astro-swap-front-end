@@ -33,17 +33,14 @@ export const SwapMenu = ({FactoryAddress}: SwapProps) => {
     //     collectSend(id)
     // }
     
-    const [tokenAddress, setTokenAddress] = useState<string>("0")
-    const handleTknAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {setTokenAddress(event.target.value === "" ? "0" : event.target.value.toLowerCase())};
+    const [tokenAddress, setTokenAddress] = useState<string>("")
+    const handleTknAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {setTokenAddress(event.target.value === "" ? "" : event.target.value.toLowerCase())};
     const [swapAmount, setSwapAmount] = useState<Number>(0)
     const handleSwapAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {setSwapAmount(event.target.value === 0 ? 0 : event.target.value)};
     const isValidAddress = isAddress(tokenAddress)
     const [swapType, setSwapType] = useState<Number>(0)
     const handleTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {setSwapType(event.target.value as Number)};
-    console.log(swapType)
-    console.log(isValidAddress)
     const exchangeAddress = useContractCall({ abi: FactoryInterface, address: FactoryAddress,  method: "convertTokenToExchange", args: [tokenAddress]}) ?? "0x0000000000000000000000000000000000000000"
-    console.log(exchangeAddress)
     const ExchangeContract = new Contract("0x9D73Ef17B4Ba73EACB1f6CA00B26B4C3e15260Bb", ExchangeABI)
     let swapFunction;
     if (swapType === 0) {swapFunction = "tokenToEth"}
@@ -55,19 +52,20 @@ export const SwapMenu = ({FactoryAddress}: SwapProps) => {
     }
     // Set up the elements
     let exchangeAddressAlert;
-    if (!isValidAddress) {
-        exchangeAddressAlert = <Alert severity="warning">Invalid token address</Alert>
-    }
-    else if (exchangeAddress == "0x0000000000000000000000000000000000000000") {
-        exchangeAddressAlert = <Alert severity="error">There is no exchange for this token</Alert>
-    }
-    else {
-        exchangeAddressAlert = <Alert severity="info"> The exchange for this token is at {exchangeAddress}</Alert>
+    if (tokenAddress !== "") {
+        if (!isValidAddress) {
+            exchangeAddressAlert = <Alert severity="warning">Invalid token address</Alert>
+        }
+        else if (exchangeAddress == "0x0000000000000000000000000000000000000000") {
+            exchangeAddressAlert = <Alert severity="error">There is no exchange for this token</Alert>
+        }
+        else {
+            exchangeAddressAlert = <Alert severity="info"> The exchange for this token is at {exchangeAddress}</Alert>
+        }
     }
 
     return (
         <div>
-        <p>There are currently {Number(exchangeCount)} exchanges.</p>
         <Stack direction="column" justifyContent="flex-start" alignItems="left" spacing={2}>
             <TextField label="Token" onChange={handleTknAddressChange} style={{maxWidth: '420px', maxHeight: '60px', minWidth: '420px', minHeight: '60px'}}/>
             {exchangeAddressAlert}

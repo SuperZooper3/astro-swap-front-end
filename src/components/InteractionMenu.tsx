@@ -10,6 +10,7 @@ import { constants } from 'ethers';
 import { useEthers } from '@usedapp/core';
 import networkMapping from "../chain-info/deployments/map.json"
 import {SwapMenu} from "./SwapMenu";
+import {PoolsMenu} from "./PoolsMenu";
 
 export const InteractionMenu = () => {
     const { chainId } = useEthers();
@@ -33,6 +34,7 @@ export const InteractionMenu = () => {
                     </TabPanel>
                     <TabPanel value="2">
                         <h2>Pools</h2>
+                        <PoolsMenu FactoryAddress={AstroSwapFactoryAddress} />
                     </TabPanel>
                     <TabPanel value="3">
                         <h2>Investments</h2>  

@@ -12,9 +12,10 @@ export interface ExchangeInfoProps {
 
 export const ExchangeInfo = ({ExchangeAddress}: ExchangeInfoProps) => {
     const { abi: ExchangeABI } = AstroSwapExchange
-    const TokenInterface = new utils.Interface(ExchangeABI)
-    const EthPool = useContractCall({ abi: ExchangeABI, address: ExchangeAddress, method: "ethPool", args: []}) ?? 0
-    const TokenPool = useContractCall({ abi: ExchangeABI, address: ExchangeAddress, method: "tokenPool", args: [], }) ?? 0
+    const ExchangeInterface = new utils.Interface(ExchangeABI)
+    console.log(ExchangeAddress)
+    const EthPool = Number(useContractCall({ abi: ExchangeInterface, address: ExchangeAddress, method: "ethPool", args: []}) ?? 0)
+    const TokenPool = Number(useContractCall({ abi: ExchangeInterface, address: ExchangeAddress, method: "tokenPool", args: [], }) ?? 0)
 
     return (
         <p>
