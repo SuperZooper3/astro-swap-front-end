@@ -13,6 +13,7 @@ export interface TokenInfoProps {
 export const TokenInfo = ({TokenAddress}: TokenInfoProps) => {
     const { abi: TokenABI } = IERC20
     const { account } = useEthers()
+    console.log("Account", account)
     const TokenInterface = new utils.Interface(TokenABI)
     const TokenName = useContractCall({ abi: TokenInterface, address: TokenAddress, method: "name", args: [], }) ?? "Unknown Name" 
     const TokenSymbol = useContractCall({ abi: TokenInterface, address: TokenAddress, method: "symbol", args: [], }) ?? "Unknown Symbol"

@@ -4,10 +4,11 @@ import { utils } from "ethers"
 import AstroSwapExchange from "../chain-info/contracts/AstroSwapExchange.json";
 import AstroSwapFactory from "../chain-info/contracts/AstroSwapFactory.json";
 import { Button, Alert, Stack, TextField, InputLabel, Select, MenuItem} from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { isAddress } from "./helpers/Address"
 import {TokenInfo} from "./TokenInfo";
 import { ExchangeInfo } from "./ExchangeInfo";
+import { InvestmentsForm } from "./InvestmentForm";
 
 export interface PoolProps {
     FactoryAddress: string;
@@ -20,8 +21,6 @@ export const PoolsMenu = ({FactoryAddress}: PoolProps) => {
     const FactoryInterface = new utils.Interface( FactoryABI )
     const ExchangeInterface = new utils.Interface( ExchangeABI )
     const FactoryContract = new Contract( FactoryAddress, FactoryABI)
-
-    
 
     // Factory Info
     const exchangeCount = useContractCall(
@@ -46,7 +45,19 @@ export const PoolsMenu = ({FactoryAddress}: PoolProps) => {
     } 
 
     // Get the exchange address from the token
-        
+    const exchangeAddress = useContractCall({
+        abi: FactoryInterface,
+        address: FactoryAddress,
+        method: "convertTokenToExchange",
+        args: [tokenAddress],
+      }) ?? "0x0000000000000000000000000000000000000000";
+      const [exchangeAddrValid, setExchangeAddrValid] = useState(false);
+  
+      useEffect(() => {
+        if (exchangeAddress !== undefined) {
+          setExchangeAddrValid(true);
+        }
+      }, [exchangeAddress]);
 
     // Setup elements
     let exchangeAddressAlert;
@@ -61,20 +72,7 @@ export const PoolsMenu = ({FactoryAddress}: PoolProps) => {
             exchangeAddressAlert = <Alert severity="success"> The exchange for this token is at {exchangeAddress}</Alert>
         }
     }
-    const EthPool = 0;
-    const TokenPool = 0;
-    let fundingMenu;
-    // Setup the funding menu
-    if (isValidAddress && exchangeAddress[0] !== "0x0000000000000000000000000000000000000000") {
-        if (EthPool == 0 && TokenPool == 0) {
-            // Seed funding menu
-            fundingMenu = <p>Seed</p>
-        }
-        else {
-            // Normal funding menu
-            fundingMenu = <p>Normal</p>
-        }
-    }
+    console.log(exchangeAddress)
 
     return (
         <Stack direction="column" justifyContent="flex-start" alignItems="left" spacing={2}>
@@ -84,9 +82,10 @@ export const PoolsMenu = ({FactoryAddress}: PoolProps) => {
             </Stack>
             {isValidAddress ? <TokenInfo TokenAddress={tokenAddress}/>  : null}    
             {exchangeAddressAlert}
-            {isValidAddress && exchangeAddress[0] == "0x0000000000000000000000000000000000000000" ? <Button color="secondary" variant="contained" onClick={handleCreatePool}>Create Pool</Button>  : null}
-            {isValidAddress && exchangeAddress[0] !== "0x0000000000000000000000000000000000000000" ? <ExchangeInfo ExchangeAddress={exchangeAddress}/>  : null}
-            {fundingMenu}
+            {isValidAddress && exchangeAddress == "0x0000000000000000000000000000000000000000" ? <Button color="secondary" variant="contained" onClick={handleCreatePool}>Create Pool</Button>  : null}
+            {exchangeAddrValid && isValidAddress && exchangeAddress != "0x0000000000000000000000000000000000000000" ? <ExchangeInfo ExchangeAddress={exchangeAddress}/>  : null}
+            {exchangeAddrValid && isValidAddress && exchangeAddress != "0x0000000000000000000000000000000000000000" ? <InvestmentsForm ExchangeAddress={exchangeAddress}/>  : null}
+            
         </Stack>
     )
 } 

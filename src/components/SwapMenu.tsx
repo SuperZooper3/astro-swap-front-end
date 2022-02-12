@@ -4,7 +4,7 @@ import { utils } from "ethers"
 import AstroSwapExchange from "../chain-info/contracts/AstroSwapExchange.json";
 import AstroSwapFactory from "../chain-info/contracts/AstroSwapFactory.json";
 import { Button, Alert, Stack, TextField, InputLabel, Select, MenuItem} from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { isAddress } from "./helpers/Address"
 import {TokenInfo} from "./TokenInfo";
 import { ExchangeInfo } from "./ExchangeInfo";
@@ -40,7 +40,24 @@ export const SwapMenu = ({FactoryAddress}: SwapProps) => {
     const isValidAddress = isAddress(tokenAddress)
     const [swapType, setSwapType] = useState<Number>(0)
     const handleTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {setSwapType(event.target.value as Number)};
-    const exchangeAddress = useContractCall({ abi: FactoryInterface, address: FactoryAddress,  method: "convertTokenToExchange", args: [tokenAddress]}) ?? "0x0000000000000000000000000000000000000000"
+
+    // Get the exchange address
+    const exchangeAddress =
+    useContractCall({
+      abi: FactoryInterface,
+      address: FactoryAddress,
+      method: "convertTokenToExchange",
+      args: [tokenAddress],
+    }) ?? "0x0000000000000000000000000000000000000000";
+    const [exchangeAddrValid, setExchangeAddrValid] = useState(false);
+
+    useEffect(() => {
+      if (exchangeAddress !== undefined) {
+        setExchangeAddrValid(true);
+      }
+    }, [exchangeAddress]);
+  
+
     const ExchangeContract = new Contract("0x9D73Ef17B4Ba73EACB1f6CA00B26B4C3e15260Bb", ExchangeABI)
     let swapFunction;
     if (swapType === 0) {swapFunction = "tokenToEth"}
@@ -71,7 +88,7 @@ export const SwapMenu = ({FactoryAddress}: SwapProps) => {
             {exchangeAddressAlert}
             {isValidAddress && exchangeAddress != "0x0000000000000000000000000000000000000000" ?
             <div>
-                <ExchangeInfo ExchangeAddress={exchangeAddress}/>
+                {exchangeAddrValid ? <ExchangeInfo ExchangeAddress={exchangeAddress}/> : null}
                 <TokenInfo TokenAddress={tokenAddress}/>
                 <br/>
                 <Stack direction="row" spacing={2}>

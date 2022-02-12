@@ -6,11 +6,11 @@ import { Contract } from "@ethersproject/contracts";
 import { useContractCall, useContractFunction, useEthers} from "@usedapp/core"
 import AstroSwapExchange from "../chain-info/contracts/AstroSwapExchange.json";
 
-export interface ExchangeInfoProps {
+export interface InvestmentFormProps {
     ExchangeAddress: string;
 }
 
-export const ExchangeInfo = ({ExchangeAddress}: ExchangeInfoProps) => {
+export const InvestmentsForm = ({ExchangeAddress}: InvestmentFormProps) => {
     const { abi: ExchangeABI } = AstroSwapExchange
     const ExchangeInterface = new utils.Interface(ExchangeABI)
     console.log(ExchangeAddress)
@@ -19,7 +19,7 @@ export const ExchangeInfo = ({ExchangeAddress}: ExchangeInfoProps) => {
 
     return (
         <p>
-            <b>Exchange: </b>Ether Pool: {EthPool} (Wei) Token Pool: {TokenPool} (Wei)
+            
         </p>
     )
 }
